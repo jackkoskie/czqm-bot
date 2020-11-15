@@ -1,0 +1,24 @@
+{
+  "name": "czqm-bot",
+  "version": "0.0.1",
+  "description": "A discord bot to run the CZQM FIR discord server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoldenXLence/czqm-bot.git"
+  },
+  "author": "CZQM FIR",
+  "license": "SEE LICENCE IN LICENCE.md",
+  "bugs": {
+    "url": "https://github.com/GoldenXLence/czqm-bot/issues"
+  },
+  "homepage": "https://github.com/GoldenXLence/czqm-bot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "fs": "0.0.1-security",
+    "nodemon": "^2.0.6"
+  }
+}
