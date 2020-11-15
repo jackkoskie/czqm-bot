@@ -10,21 +10,32 @@ client.on('ready', () => {
     console.log("The bot is ONLINE");
 });
 
-// Tells bot where to find the commands files
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-
-    client.commands.set(command.name, command);
-}
-
 // Reads Incoming Messages
 client.on('message', message => {
     if (!message.content.startsWith(`${config.prefix}`)) {
         return;
     } else {
         let args = message.content.toLowerCase().substring(config.prefix.length).split(" ");
-        console.log(args[0])
+        
+        switch (args[0]) {
+            case "ping":
+                message.reply("Pong!")
+                break;
+            case "event":
+                switch (args[1]) {
+                    case "title":
+                        const title1 = args.slice(2);
+                        for (var i = 0; i < title1.length; i++) {
+                            title1[i] = title1[i].charAt(0).toUpperCase() + title1[i].substring(1);
+                        }
+
+                        const title = title1.join(' ')
+
+                        message.channel.send(`Event title set to \`${title}\``)
+                        break;
+                }
+                break;
+        }
     }
 });
 
