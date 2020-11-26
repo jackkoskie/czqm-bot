@@ -1,14 +1,28 @@
 // All the requires
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const {token} = require('./token.json');
+const { token } = require('./token.json');
 const fs = require('fs')
-const config = require('./config.json')
+const config = require('./config.json');
+const { measureMemory } = require('vm');
+const mongoose = require('mongoose');
+const { dburl } = require('./database.json');
+const eventSchema = require('./models/event')
 
 // Tells the console when the bot has logged on
 client.on('ready', () => {
     console.log("The bot is ONLINE");
 });
+
+// Tells the bot where to find the command files
+client.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+
+    client.commands.set(command.name, command);
+}
 
 // Reads Incoming Messages
 client.on('message', message => {
@@ -18,26 +32,28 @@ client.on('message', message => {
         let args = message.content.toLowerCase().substring(config.prefix.length).split(" ");
         
         switch (args[0]) {
-            case "ping":
-                message.reply("Pong!")
+            case 'ping':
+                client.commands.get('ping').execute(message, args);
                 break;
-            case "event":
-                switch (args[1]) {
-                    case "title":
-                        const title1 = args.slice(2);
-                        for (var i = 0; i < title1.length; i++) {
-                            title1[i] = title1[i].charAt(0).toUpperCase() + title1[i].substring(1);
-                        }
-
-                        const title = title1.join(' ')
-
-                        message.channel.send(`Event title set to \`${title}\``)
-                        break;
-                }
+            
+            case 'event':
+            case 'ev':
+                client.commands.get('event').execute(message, args, config, Discord, mongoose, eventSchema);
                 break;
         }
     }
 });
+
+// Logs the bot in to the Database
+try {
+    mongoose.connect(dburl, {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true
+    });
+} catch (err) {
+    console.error(`Error connecting to MongoDB database. Received the following error:\n${err}`);
+}
 
 // Logs the bot in to Discord
 try {
