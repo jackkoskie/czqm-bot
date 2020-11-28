@@ -17,18 +17,24 @@ module.exports = {
                 };
                 break;
 
-            case 'title':
+            case 'name':
                 if (!args[2] || !args[3]) { return };
 
                 try {
-                    var doc = eventSchema.findOne({ _id: args[2] });
-                    var title = args.slice(3).join(' ');
-                    doc.title = title.charAt(0).toUpperCase() + title.slice(1);
-                    doc.save();
+                    async function name(args) {
+                        const doc = await eventSchema.findOne({ "_id": args[2] });
+                        var name = await args.slice(3).join(' ');
+                        var name2 = name.charAt(0).toUpperCase() + name.slice(1);
+                        doc.name = name2;
+                        await doc.save();
+                        message.channel.send(`Set name of event with id of \`${doc._id}\` to **${doc.name}**.`);
+                    };
 
-                    message.channel.send(`Set title of event with id of \`${doc._id}\` to **${doc.title}**.`);
+                    name(args);
+
                 } catch (err) {
                     message.reply('sorry there was an error!');
+                    console.error(err);
                 };
 
                 break;
