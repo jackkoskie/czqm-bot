@@ -29,16 +29,16 @@ client.on('message', message => {
     if (!message.content.startsWith(`${config.prefix}`)) {
         return;
     } else {
-        let args = message.content.toLowerCase().substring(config.prefix.length).split(" ");
-        
+        let args = message.content.substring(config.prefix.length).split(" ");
+
         switch (args[0]) {
             case 'ping':
                 client.commands.get('ping').execute(message, args);
                 break;
-            
+
             case 'event':
             case 'ev':
-                client.commands.get('event').execute(message, args, config, Discord, mongoose, eventSchema);
+                client.commands.get('event').execute(message, args, config, Discord, mongoose, eventSchema, client);
                 break;
         }
     }
