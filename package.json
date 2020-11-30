@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/GoldenXLence/czqm-bot#readme",
   "dependencies": {
-    "discord.js": "^12.5.0",
+    "discord.js": "^12.5.1",
     "fs": "0.0.1-security",
     "mongoose": "^5.10.16",
     "nodemon": "^2.0.6"
