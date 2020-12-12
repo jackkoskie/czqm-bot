@@ -10,6 +10,7 @@ const eventSchema = new Schema({
     date: String,
 
     possitions: Array,
+    people: Array,
 });
 
 module.exports = mongoose.model('events', eventSchema);
