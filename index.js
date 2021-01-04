@@ -52,6 +52,9 @@ client.on('message', message => {
             case 'controlers':
                 client.commands.get('controlers').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
                 break;
+            case 'help':
+                client.commands.get('help').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
+                break;
         }
     }
 });
