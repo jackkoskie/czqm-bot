@@ -40,6 +40,17 @@ client.on('message', message => {
             case 'ev':
                 client.commands.get('event').execute(message, args, config, Discord, mongoose, eventSchema, client);
                 break;
+
+            case 'roster':
+            case 'ro':
+                client.commands.get('roster').execute(message, args, config, Discord, mongoose, eventSchema, client);
+                break;
+            case 'control':
+                client.commands.get('control').execute(message, args, config, Discord, mongoose, eventSchema, client);
+                break;
+            case 'controlers':
+                client.commands.get('controlers').execute(message, args, config, Discord, mongoose, eventSchema, client);
+                break;
         }
     }
 });

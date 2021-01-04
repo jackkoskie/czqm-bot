@@ -8,11 +8,17 @@ module.exports = {
             case 'post':
                 if (!args[2]) { return };
 
+                function sleep(ms) {
+                    return new Promise((resolve) => {
+                        setTimeout(resolve, ms);
+                    });
+                }
+
                 async function post(args) {
                     var doc = await eventSchema.findOne({ "_id": args[2] });
 
                     var eventEmbed = {
-                        title: `Event Notification - *__${doc.name}__*`,
+                        title: `Event Notification - *${doc.name}*`,
                         author: {
                             name: 'CZQM FIR',
                             icon_url: 'http://czqm.ca/images/imageTitleLeft.png',
@@ -21,18 +27,32 @@ module.exports = {
                         fields: [
                             {
                                 name: 'Event Date',
-                                value: doc.date,
+                                value: `*${doc.date}*`,
+                                inline: true,
                             },
                             {
                                 name: 'Event Time',
-                                value: doc.time,
+                                value: `*${doc.time}*`,
+                                inline: true,
                             },
-                        ]
-                    }
+                            {
+                                name: 'Details',
+                                value: `*${doc.details}*`,
+                            },
 
+                        ],
+                        footer: {
+                            text: `To control at this event, please type the command: \`.control ${doc._id}\`.`
+                        }
+                    }
+                    const banner = new Discord.MessageAttachment(doc.banner, `${doc._id}.png`);
 
                     //client.channels.get(config.eventChannel).send({ embed: eventEmbed});
+                    message.delete()
+                    message.channel.send('@here')
                     message.channel.send({ embed: eventEmbed });
+                    await sleep(500);
+                    message.channel.send({ files: doc.banner })
                 }
 
                 post(args);
@@ -142,7 +162,7 @@ module.exports = {
                         if (!args[2] || !args[3]) { return };
 
                         var doc = await eventSchema.findOne({ "_id": args[2] });
-                        doc.date = args.slice(3).join(' ');
+                        doc.details = args.slice(3).join(' ');
                         await doc.save();
 
                         message.channel.send(`Set the details of event with id of \`${doc._id}\`.`);
@@ -156,7 +176,23 @@ module.exports = {
 
                 break;
 
+            case 'banner':
+                try {
+                    async function banner(args) {
+                        if (!args[2] || !args[3]) { return };
+                        var doc = await eventSchema.findOne({ "_id": args[2] });
+                        doc.banner = args[3]
+                        doc.save()
+                        message.channel.send(`Set the banner of event with id of \`${doc._id}\``);
+                        message.delete();
+                    }
 
+                    banner(args);
+                } catch {
+                    message.reply('sorry there was an error!');
+                    console.error(err);
+                };
+                break;
 
         }
 
