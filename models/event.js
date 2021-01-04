@@ -5,11 +5,11 @@ const eventSchema = new Schema({
     _id: String,
 
     name: String,
-    description: String,
+    details: String,
     time: String,
     date: String,
+    banner: String,
 
-    possitions: Array,
     people: Array,
 });
 
