@@ -1,7 +1,7 @@
 module.exports = {
     name: 'event',
     description: 'Command for creating and managing events',
-    execute(message, args, config, Discord, mongoose, eventSchema, client) {
+    execute(message, args, config, Discord, mongoose, eventSchema, client, permissions) {
 
         if (permissions.event.includes(message.member.user.id)) {
             switch (args[1]) {
