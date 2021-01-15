@@ -36,6 +36,11 @@ module.exports = {
                     inline: true,
                     value: 'Shows a list of controlers who wish to control during an event.'
                 },
+                {
+                    name: '.metar {ICAO CODE}',
+                    inline: true,
+                    value: 'Retrieves the current VATSIM metar for a specific airport.'
+                }
             ],
             footer: {
                 text: `© CZQM FIR, 2021.`
