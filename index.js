@@ -55,6 +55,9 @@ client.on('message', message => {
             case 'help':
                 client.commands.get('help').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
                 break;
+            case 'metar':
+                client.commands.get('metar').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
+                break;
         }
     }
 });
