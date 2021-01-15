@@ -26,7 +26,10 @@ module.exports = {
                             name: `${args[1].toUpperCase()} METAR`,
                             value: `${d}`
                         }
-                    ]
+                    ],
+                    footer: {
+                        text: `© CZQM FIR, 2021.`
+                    }
                 }
 
                 message.channel.send({ embed: metarEmbed })
