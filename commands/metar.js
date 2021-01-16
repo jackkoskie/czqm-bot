@@ -1,7 +1,7 @@
 module.exports = {
     name: 'metar',
     description: 'fetches metar for a specific airport',
-    execute(message, args, config, Discord, mongoose, eventSchema, client, permissions) {
+    execute(message, args, config, Discord, mongoose, eventSchema, client) {
         const https = require('https')
         const options = {
             hostname: 'metar.vatsim.net',

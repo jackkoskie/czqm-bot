@@ -8,7 +8,6 @@ const { measureMemory } = require('vm');
 const mongoose = require('mongoose');
 const { dburl } = require('./database.json');
 const eventSchema = require('./models/event')
-const permissions = require('./permissions.json');
 
 // Tells the console when the bot has logged on
 client.on('ready', () => {
@@ -34,29 +33,29 @@ client.on('message', message => {
 
         switch (args[0]) {
             case 'ping':
-                client.commands.get('ping').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
+                client.commands.get('ping').execute(message, args, config, Discord, mongoose, eventSchema, client);
                 break;
 
             case 'event':
             case 'ev':
-                client.commands.get('event').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
+                client.commands.get('event').execute(message, args, config, Discord, mongoose, eventSchema, client);
                 break;
 
             case 'roster':
             case 'ro':
-                client.commands.get('roster').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
+                client.commands.get('roster').execute(message, args, config, Discord, mongoose, eventSchema, client);
                 break;
             case 'control':
-                client.commands.get('control').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
+                client.commands.get('control').execute(message, args, config, Discord, mongoose, eventSchema, client);
                 break;
             case 'controlers':
-                client.commands.get('controlers').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
+                client.commands.get('controlers').execute(message, args, config, Discord, mongoose, eventSchema, client);
                 break;
             case 'help':
-                client.commands.get('help').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
+                client.commands.get('help').execute(message, args, config, Discord, mongoose, eventSchema, client);
                 break;
             case 'metar':
-                client.commands.get('metar').execute(message, args, config, Discord, mongoose, eventSchema, client, permissions);
+                client.commands.get('metar').execute(message, args, config, Discord, mongoose, eventSchema, client);
                 break;
         }
     }

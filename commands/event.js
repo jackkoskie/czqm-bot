@@ -1,9 +1,9 @@
 module.exports = {
     name: 'event',
     description: 'Command for creating and managing events',
-    execute(message, args, config, Discord, mongoose, eventSchema, client, permissions) {
+    execute(message, args, config, Discord, mongoose, eventSchema, client) {
 
-        if (permissions.event.includes(message.member.user.id)) {
+        if (message.member.roles.cache.some(role => role.name === 'staff')) {
             switch (args[1]) {
 
                 case 'post':
@@ -50,10 +50,11 @@ module.exports = {
 
                         //client.channels.get(config.eventChannel).send({ embed: eventEmbed});
                         message.delete()
-                        message.channel.send('@here')
+                        message.channel.send('here')
                         message.channel.send({ embed: eventEmbed });
                         await sleep(500);
-                        message.channel.send({ files: doc.banner })
+                        const event = new Discord.MessageAttachment(doc.banner, 'banner.png');
+                        message.channel.send({ files: [banner] })
                     }
 
                     post(args);
@@ -118,7 +119,7 @@ module.exports = {
 
                             if (!args[3]) { return };
 
-                            doc.date = args[3];
+                            doc.date = args.slice(3).join(' ');
                             await doc.save();
 
                             message.channel.send(`Set date of event with id of \`${doc._id}\` to **${doc.date}**.`);
@@ -182,7 +183,7 @@ module.exports = {
                         async function banner(args) {
                             if (!args[2] || !args[3]) { return };
                             var doc = await eventSchema.findOne({ "_id": args[2] });
-                            doc.banner = args[3]
+                            doc.banner = args.slice(2).join('')
                             doc.save()
                             message.channel.send(`Set the banner of event with id of \`${doc._id}\``);
                             message.delete();
