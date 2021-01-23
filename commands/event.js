@@ -3,7 +3,7 @@ module.exports = {
     description: 'Command for creating and managing events',
     execute(message, args, config, Discord, mongoose, eventSchema, client) {
 
-        if (message.member.roles.cache.some(role => role.name === 'staff')) {
+        if (message.channel.type === 'dm' || message.member.roles.cache.some(role => role.name === 'staff')) {
             switch (args[1]) {
 
                 case 'post':
@@ -42,19 +42,18 @@ module.exports = {
                                 },
 
                             ],
-                            footer: {
-                                text: `To control at this event, please type the command: \`.control ${doc._id}\`.`
-                            }
+
                         }
                         const banner = new Discord.MessageAttachment(doc.banner, `${doc._id}.png`);
 
                         //client.channels.get(config.eventChannel).send({ embed: eventEmbed});
-                        message.delete()
-                        message.channel.send('here')
+                        if (!message.channel.type === 'dm') { message.delete() }
+                        const event = new Discord.MessageAttachment(`${doc.banner}`, 'banner.png');
+                        message.channel.send('@here')
                         message.channel.send({ embed: eventEmbed });
-                        await sleep(500);
-                        const event = new Discord.MessageAttachment(doc.banner, 'banner.png');
-                        message.channel.send({ files: [banner] })
+                        message.channel.send({ files: [banner] });
+
+
                     }
 
                     post(args);
@@ -183,10 +182,10 @@ module.exports = {
                         async function banner(args) {
                             if (!args[2] || !args[3]) { return };
                             var doc = await eventSchema.findOne({ "_id": args[2] });
-                            doc.banner = args.slice(2).join('')
+                            doc.banner = args.slice(3).join('')
                             doc.save()
                             message.channel.send(`Set the banner of event with id of \`${doc._id}\``);
-                            message.delete();
+                            if (!message.channel.type === 'dm') { message.delete() }
                         }
 
                         banner(args);

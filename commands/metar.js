@@ -11,7 +11,6 @@ module.exports = {
         }
 
         const req = https.request(options, res => {
-            //console.log(`statusCode: ${res.statusCode}`)
 
             res.on('data', d => {
                 var metarEmbed = {
