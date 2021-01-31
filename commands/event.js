@@ -2,6 +2,7 @@ module.exports = {
     name: 'event',
     description: 'Command for creating and managing events',
     execute(message, args, config, Discord, mongoose, eventSchema, client) {
+        const dotenv = require('dotenv').config({ path: __dirname + './../.env' })
 
         if (message.channel.type === 'dm' || message.member.roles.cache.some(role => role.name === 'staff')) {
             switch (args[1]) {
@@ -44,6 +45,14 @@ module.exports = {
                             ],
 
                         }
+
+                        if (doc.controlable === true) {
+                            eventEmbed.fields.push({
+                                name: 'How to control?',
+                                value: `Type \`${process.env.COMMAND_PREFIX}control ${doc._id}\``,
+                                inline: true,
+                            })
+                        }
                         const banner = new Discord.MessageAttachment(doc.banner, `${doc._id}.png`);
 
                         //client.channels.get(config.eventChannel).send({ embed: eventEmbed});
@@ -85,7 +94,7 @@ module.exports = {
                     break;
 
                 case 'name':
-                    if (!args[2] || !args[3]) { return };
+                    if (!args[2 || 3]) { return };
 
                     try {
 
@@ -112,7 +121,7 @@ module.exports = {
                     try {
                         async function date(args) {
 
-                            if (!args[2] || !args[3]) { return };
+                            if (!args[2 || 3]) { return };
 
                             var doc = await eventSchema.findOne({ "_id": args[2] });
 
@@ -138,7 +147,7 @@ module.exports = {
                     try {
                         async function time(args) {
 
-                            if (!args[2] || !args[3]) { return };
+                            if (!args[2 || 3]) { return };
 
                             var doc = await eventSchema.findOne({ "_id": args[2] });
                             doc.time = args.slice(3).join(' ');
@@ -160,7 +169,7 @@ module.exports = {
 
                     try {
                         async function details(args) {
-                            if (!args[2] || !args[3]) { return };
+                            if (!args[2 || 3]) { return };
 
                             var doc = await eventSchema.findOne({ "_id": args[2] });
                             doc.details = args.slice(3).join(' ');
@@ -180,7 +189,7 @@ module.exports = {
                 case 'banner':
                     try {
                         async function banner(args) {
-                            if (!args[2] || !args[3]) { return };
+                            if (!args[2 || 3]) { return };
                             var doc = await eventSchema.findOne({ "_id": args[2] });
                             doc.banner = args.slice(3).join('')
                             doc.save()
@@ -193,6 +202,28 @@ module.exports = {
                         message.reply('sorry there was an error!');
                         console.error(err);
                     };
+                    break;
+
+                case 'control':
+                    try {
+
+                        async function control(args) {
+                            if (!args[2] || !args[3]) { return; }
+                            var doc = await eventSchema.findOne({ "_id": args[2] });
+                            doc.controlable = args[3]
+                            doc.save()
+                            message.channel.send(`Set the controlable status of event with id of \`${doc._id}\` to \`${doc.controlable}\``).then(sent => {
+                                let id = sent.id
+                                if (!message.channel.type === 'dm') { message.delete(5000) }
+                            });
+                            if (!message.channel.type === 'dm') { message.delete() }
+                        }
+
+                        control(args);
+                    } catch {
+                        message.reply('sorry there was an error!');
+                        console.error(err);
+                    }
                     break;
 
             }

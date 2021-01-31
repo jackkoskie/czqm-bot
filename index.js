@@ -36,7 +36,7 @@ client.on('message', message => {
 
             case 'event':
             case 'ev':
-                client.commands.get('event').execute(message, args, process.env, Discord, mongoose, eventSchema, client);
+                client.commands.get('event').execute(message, args, process.env, Discord, mongoose, eventSchema, client, process);
                 break;
 
             case 'roster':

@@ -9,6 +9,7 @@ const eventSchema = new Schema({
     time: String,
     date: String,
     banner: String,
+    controlable: Boolean,
 
     people: Array,
 });
