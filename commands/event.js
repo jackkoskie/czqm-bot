@@ -46,7 +46,7 @@ module.exports = {
 
                         }
 
-                        if (doc.controlable === true) {
+                        if (doc.controllable === true) {
                             eventEmbed.fields.push({
                                 name: 'How to control?',
                                 value: `Type \`${process.env.COMMAND_PREFIX}control ${doc._id}\``,
@@ -212,7 +212,7 @@ module.exports = {
                             var doc = await eventSchema.findOne({ "_id": args[2] });
                             doc.controlable = args[3]
                             doc.save()
-                            message.channel.send(`Set the controlable status of event with id of \`${doc._id}\` to \`${doc.controlable}\``).then(sent => {
+                            message.channel.send(`Set the controllable status of event with id of \`${doc._id}\` to \`${doc.controllable}\``).then(sent => {
                                 let id = sent.id
                                 if (!message.channel.type === 'dm') { message.delete(5000) }
                             });
